@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       # Set up Node.js
       - uses: actions/setup-node@v18
+      - uses: actions/setup-npm@v6
       # Install dependencies
       - name: Install dependencies
         run: |
@@ -24,7 +25,7 @@ jobs:
           make install
       - name: Install npm as dependency
         run: npm install
-      # Start Linter
-      - name: Run linter and pytest
-        run: |
-          make check
+      - name: Run linter
+        run: make lint
+      - name: Run pytest
+        run: make test
