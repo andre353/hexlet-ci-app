@@ -1,22 +1,30 @@
 name: test
 
-on: push
+on:
+  - push
+  - pull_request
 
 jobs:
   build: # this name is taken as example
     runs-on: ubuntu-latest
+    # strategy:
+    #   matrix:
+    #     os: [ubuntu-latest]
+    #     node-version: [18.x]
 
     steps:
       # Cloning the repo
       - uses: actions/checkout@v2
       # Set up Node.js
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v18
       # Install dependencies
-      - run: npm install
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          make install
+      - name: Install npm as dependency
+        run: npm install
       # Start Linter
-      - run: npm run lint
-      # Start tests
-      # Steps can have names, it may help by debugging
-      # name will be shown on Github while build
-      - name: run tests
-        run: npm test # name and run refer to one job, therefore a hyphen is only by name
+      - name: Run linter and pytest
+        run: |
+          make check
